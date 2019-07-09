@@ -24,3 +24,16 @@ services:
         - traefik.enable=true
         - traefik.frontend.rule=HostRegexp:www,www.{domain:[a-zA-Z0-9.]+}
         - traefik.port=80
+  sample:
+    image: cesarbr/knot-samples-hello-world:dev
+    env_file: './env.d/knot-samples-hello-world.env'
+    volumes:
+      - ../knot-samples/hello-world/cloud/frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.frontend.rule=HostRegexp:sample,sample.{domain:[a-zA-Z0-9.]+}
+        - traefik.port=80
+
