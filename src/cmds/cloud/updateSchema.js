@@ -3,7 +3,7 @@ import yargs from 'yargs';
 import fs from 'fs';
 import { Client } from '@cesarbr/knot-cloud-sdk-js';
 import options from './utils/options';
-import getFileCredentials from './utils/getFileCredentials';
+import AMQPConnection from './network/AMQPConnection';
 
 const getFileSchema = (filePath) => {
   const rawData = fs.readFileSync(filePath);
@@ -17,42 +17,36 @@ const getFileSchema = (filePath) => {
   };
 };
 
-const updateSchema = (args) => {
+
+const updateSchema = async (args) => {
   const client = new Client({
-    protocol: args.protocol,
     hostname: args.server,
     port: args.port,
-    pathName: args.pathName,
-    id: args['client-id'],
-    token: args['client-token'],
+    token: args.token,
+    username: args.username,
+    password: args.password,
+    protocol: args.protocol,
   });
 
-  client.on('ready', () => {
-    client.updateSchema([
-      {
-        sensorId: args['sensor-id'],
-        valueType: args['value-type'],
-        unit: args.unit,
-        typeId: args['type-id'],
-        name: args.name,
-      },
-    ]);
-  });
-  client.on('updated', () => {
-    client.close();
-  });
-  client.on('error', (err) => {
-    console.log(err);
-    console.log('Connection refused');
-  });
-  client.connect();
+  const schema = {
+    sensorId: args.sensorId,
+    valueType: args.valueType,
+    unit: args.unit,
+    typeId: args.typeId,
+    name: args.name,
+  };
+
+  await client.connect();
+  const result = await client.updateSchema(args.thingId, [schema]);
+  console.log(result);
+  await client.stop();
 };
 
+
 yargs
-  .config('credentials-file', path => getFileCredentials(path))
   .config('schema-file', path => getFileSchema(path))
   .command({
-    command: 'update-schema [sensor-id] [value-type] [unit] [type-id] [name]',
+    command: 'update-schema <thing-id> [sensor-id] [value-type] [unit] [type-id] [name]',
     desc: 'Update a thing schema',
     builder: (_yargs) => {
       _yargs

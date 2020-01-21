@@ -3,35 +3,27 @@ import yargs from 'yargs';
 import { Client } from '@cesarbr/knot-cloud-sdk-js';
 import isBase64 from 'is-base64';
 import options from './utils/options';
-import getFileCredentials from './utils/getFileCredentials';
 
-const publishData = (args) => {
+const publishData = async (args) => {
   const client = new Client({
-    protocol: args.protocol,
     hostname: args.server,
     port: args.port,
-    pathName: args.pathName,
-    id: args['client-id'],
-    token: args['client-token'],
+    token: args.token,
+    username: args.username,
+    password: args.password,
+    protocol: args.protocol,
   });
 
-  client.on('ready', () => {
-    client.publishData(args['sensor-id'], args.value);
-  });
-  client.on('published', () => {
-    client.close();
-  });
-  client.on('error', (err) => {
-    console.error(err);
-    console.log('Connection refused');
-  });
-  client.connect();
+  const data = [{ sensorId: args.sensorId, value: args.value }]
+  await client.connect();
+  const result = await client.publishData(args.thingId, data);
+  console.log(result)
+  await client.close();
 };
 
 yargs
-  .config('credentials-file', path => getFileCredentials(path))
   .command({
-    command: 'publish-data <sensor-id> <value>',
+    command: 'publish-data <thing-id> <sensor-id> <value>',
     desc: 'Publish <value> as a <sensor-id>',
     builder: (_yargs) => {
       _yargs
@@ -56,7 +48,7 @@ yargs
           },
         });
     },
-    handler: (args) => {
-      publishData(args);
+    handler: async (args) => {
+      await publishData(args);
     },
   });

@@ -2,8 +2,23 @@
 import yargs from 'yargs';
 import { Client } from '@cesarbr/knot-cloud-sdk-js';
 import options from './utils/options';
+import AMQPConnection from './network/AMQPConnection';
 
-const createThing = async (args) => {
+const buildQuery = (params) => {
+  const base = {
+    type: params.type,
+  };
+
+  if (params.name) {
+    base.metadata = {
+      name: params.name,
+    };
+  }
+
+  return base;
+};
+
+const listThings = async (args) => {
   const client = new Client({
     hostname: args.server,
     port: args.port,
@@ -12,22 +27,20 @@ const createThing = async (args) => {
     password: args.password,
     protocol: args.protocol,
   });
-
   await client.connect();
-  const result = await client.registerDevice(args.id, args.name);
+  const result = await client.getDevices();
   console.log(result)
-  await client.stop();
 };
 
 yargs
   .command({
-    command: 'create-thing <id> <name>',
-    desc: 'Create a thing',
+    command: 'list-things',
+    desc: 'List registered things',
     builder: (_yargs) => {
       _yargs
-        .options(options)
+        .options(options);
     },
     handler: async (args) => {
-      await createThing(args);
+      await listThings(args);
     },
   });

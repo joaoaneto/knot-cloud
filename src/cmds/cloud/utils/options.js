@@ -1,13 +1,13 @@
-import os from 'os';
-import getFileCredentials from './getFileCredentials';
-
-const credentials = getFileCredentials(`${os.homedir()}/.knot/credentials.json`);
-
 export default {
-  server: {
+  amqpServer: {
     describe: 'Server hostname',
     demandOption: true,
-    default: 'ws.knot.cloud',
+    default: 'api.knot.cloud',
+  },
+  httpServer: {
+    describe: 'Server hostname',
+    demandOption: true,
+    default: 'api.knot.cloud',
   },
   port: {
     describe: 'Server port',
@@ -17,25 +17,20 @@ export default {
   protocol: {
     describe: 'Protocol name',
     demandOption: true,
-    default: 'wss',
+    default: 'https',
   },
-  pathName: {
-    describe: 'Path name',
-    demandOption: false,
-    default: '/ws',
-  },
-  'client-id': {
-    describe: 'Client ID',
+  username: {
+    describe: 'User name',
     demandOption: true,
-    default: credentials['client-id'],
+    default: 'knot',
   },
-  'client-token': {
-    describe: 'Client token',
+  password: {
+    describe: 'Password',
     demandOption: true,
-    default: credentials['client-token'],
+    default: 'knot',
   },
-  'credentials-file': {
-    describe: 'Credentials file',
-    demandOption: false,
+  token: {
+    describe: 'User token',
+    demandOption: true,
   },
 };

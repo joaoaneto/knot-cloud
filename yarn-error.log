@@ -1,0 +1,84 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.16.0/libexec/bin/yarn.js
+
+PATH: 
+  /Users/jneto/.poetry/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/Cellar/rabbitmq/3.7.16/sbin/
+
+Yarn version: 
+  1.16.0
+
+Node version: 
+  10.16.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: EACCES: permission denied, unlink '/Users/jneto/workspace/knot/cloud/knot-cloud/node_modules/acorn/README.md'
+
+npm manifest: 
+  {
+    "name": "@cesarbr/knot-cloud",
+    "version": "1.4.0",
+    "description": "KNoT Cloud CLI",
+    "contributors": [
+      "Thiago Cardoso <thiago.figuerdo@cesar.org.br>",
+      "Paulo Serra Filho <ptvsf@cesar.org.br>",
+      "Ramon Ribeiro <rhpr@cesar.org.br>",
+      "Joao Alexandre Neto <joao.alexandre@cesar.org.br>"
+    ],
+    "main": "./build/index.js",
+    "bin": {
+      "knot-cloud": "./build/index.js"
+    },
+    "scripts": {
+      "build": "babel src --out-dir build && gulp",
+      "lint": "eslint ./src"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/CESARBR/knot-cloud.git"
+    },
+    "keywords": [
+      "IoT",
+      "Cloud"
+    ],
+    "author": "KNoT",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/CESARBR/knot-cloud/issues"
+    },
+    "homepage": "https://github.com/CESARBR/knot-cloud#readme",
+    "devDependencies": {
+      "@babel/cli": "^7.5.5",
+      "@babel/core": "^7.5.5",
+      "@babel/node": "^7.5.5",
+      "@babel/preset-env": "^7.5.5",
+      "babel-plugin-module-resolver": "^3.2.0",
+      "eslint": "^5.3.0",
+      "eslint-config-airbnb-base": "^13.2.0",
+      "eslint-import-resolver-babel-module": "^5.1.0",
+      "eslint-plugin-import": "^2.18.2",
+      "gulp": "^4.0.2",
+      "pre-commit": "^1.2.2"
+    },
+    "pre-commit": [
+      "lint"
+    ],
+    "dependencies": {
+      "@cesarbr/knot-cloud-sdk-js": "file:../../fog/core-development/knot-cloud-sdk-js",
+      "amqplib": "^0.5.5",
+      "colors": "^1.3.3",
+      "fs-extra": "^7.0.1",
+      "git-clone": "^0.1.0",
+      "is-base64": "^0.1.0",
+      "prompt": "^1.0.0",
+      "yargs": "^13.3.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
